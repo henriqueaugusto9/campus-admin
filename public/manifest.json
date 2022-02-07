@@ -1,0 +1,16 @@
+{
+  "short_name": "GabaritaLab",
+  "name": "Gabarita Lab",
+  "description": "Aplicativo da Gabarita Lab para vestibulares",
+  "start_url": "/",
+  "background_color": "#846CFF",
+  "display": "standalone",
+  "theme_color": "#846CFF",
+  "icons": [
+    {
+      "src": "%PUBLIC_URL%/favicon.ico",
+      "sizes": "72x72",
+      "type": "image/x-icon"
+    }
+  ]
+}

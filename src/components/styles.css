@@ -1,0 +1,19 @@
+
+.textFieldContainer {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #e0eefc;
+    border-radius: 24px;
+    margin: 8px 0 8px 0;
+    background-color: #fff;
+    height: 40px;
+    width: 100%;
+}
+
+.textField:focus .textFieldContainer {
+    border: 1px solid #298ce9;
+}
+
+.textField {
+    color: #298ce9;
+}

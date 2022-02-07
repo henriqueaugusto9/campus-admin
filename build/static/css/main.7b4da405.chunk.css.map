@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/scenes/HomeScene/styles.css"],"names":[],"mappings":"AAEA,qBACI,WACJ,CAEA,mBACI,YACJ,CAEA,yBACI,sBACJ","file":"main.7b4da405.chunk.css","sourcesContent":["\n\n.menu-wrapper--inner {\n    padding: 2px\n}\n\n.menu-item-wrapper {\n    margin: 0 8px 0 8px;\n}\n\n.menu-item-wrapper:focus {\n    outline: none !important;\n}"]}

@@ -1,0 +1,9 @@
+{
+  "short_name": "Monitoria",
+  "name": "Monitoria App",
+  "description": "Aplicativo de monitoria para vestibulares",
+  "start_url": "/",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "theme_color": "#3367D6"
+}
