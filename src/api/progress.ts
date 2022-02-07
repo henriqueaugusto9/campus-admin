@@ -9,7 +9,7 @@ class ProgressAPI {
     static getProgress = async ({ token }: authStudent) => {
         return await client.get('progress', { headers: { Authorization: `Bearer ${token}` } })
             .then((response) => {
-                return response.data
+                return response.data.progress[0] ?? null
             })
             .catch((err) => {
                 console.log(err)

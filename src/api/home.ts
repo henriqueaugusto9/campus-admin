@@ -10,7 +10,6 @@ class HomeAPI {
     static homeData = async ({ token }: homeStudent) => {
         return await client.get('home', { headers: { Authorization: `Bearer ${token}` } })
             .then((response) => {
-                console.log('getHomeData api', response);
                 return response.data
             })
             .catch((err) => {

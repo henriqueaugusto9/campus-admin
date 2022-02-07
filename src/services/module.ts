@@ -1,7 +1,7 @@
 import { ContainerModule } from 'inversify'
-import StudentService from './StudentService'
+import AppService from './UserService'
 
 
 export const ServicesModule = new ContainerModule((bind) => {
-    bind(StudentService).toSelf().inSingletonScope()
+    bind(AppService).toSelf().inSingletonScope()
 })

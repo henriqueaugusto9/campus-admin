@@ -10,15 +10,11 @@ import registerServiceWorker from './registerServiceWorker';
 import { UNSTATED_CONTAINERS } from './repositories/UnstatedBinds';
 
 import LoginScene from './scenes/LoginScene'
-import HomeScene from './scenes/HomeScene'
-import SubjectScene from './scenes/SubjectScene';
-import ProfileScene from './scenes/ProfileScene'
-import CalendarScene from './scenes/CalendarScene';
+import HomeScene from './scenes/ProgressScene'
 import TabBarScene from './scenes/TabBarScene'
-import EditReviewScene from './scenes/EditReviewScene';
-import EditProfileScene from './scenes/EditProfileScene';
-import ReviewScene from './scenes/ReviewScene';
-import RecoveryPasswordScene from './scenes/RecoverPassword';
+import { WebViewScene } from './scenes/WebViewScene';
+import SubscriptionExpired from './services/SubscriptionExpired';
+import ImagesScene from './scenes/ImagesScene';
 
 class App extends Component {
 
@@ -27,8 +23,9 @@ class App extends Component {
     }
 
     componentDidMount() {
+        SubscriptionExpired.setIsExpired(false)
         const token = localStorage.getItem('token')
-        if (token != null) {
+        if (token !== null) {
             this.setState({ redirectTo: '/home' })
         }
     }
@@ -42,13 +39,9 @@ class App extends Component {
                             <Route exact path="/" render={() => <Redirect to={this.state.redirectTo} />} />
                             <Route exact path='/home' component={TabBarScene} />
                             <Route exact path='/login' component={LoginScene} />
-                            <Route exact path='/subject' component={SubjectScene} />
-                            <Route exact path='/profile' component={ProfileScene} />
-                            <Route exact path='/calendar' component={CalendarScene} />
-                            <Route exact path='/review' component={ReviewScene} />
-                            <Route exact path='/review/edit' component={EditReviewScene} />
-                            <Route exact path='/profile/edit' component={EditProfileScene} />
-                            <Route exact path='/recuperar-senha/:token' component={RecoveryPasswordScene} />
+                            <Route exact path='/showPdf/' component={WebViewScene} />
+                            <Route exact path='/showSheets/' component={WebViewScene} />
+                            <Route exact path='/images/' component={ImagesScene} />
                         </Switch>
                     </Router>
                 </UnstatedProvider>

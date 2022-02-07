@@ -13,7 +13,6 @@ interface IEditClass {
 class SubjectAPI {
 
     static editClass = async ({ planID, contents }: IEditClass, { token }: auth) => {
-        console.log(`{\n\tplanID: ${planID},\ncontents: ${contents} \n}`)
         return await client.put(`plan/${planID}`, { contents }, { headers: { Authorization: `Bearer ${token}` } })
             .then((response) => {
 

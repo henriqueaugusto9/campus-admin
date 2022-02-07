@@ -14,7 +14,7 @@ export const Container = styled.div`
 export const DiagonalContainer = styled.div`
     height: 50%;
     width: 100%;
-    background-color: ${Colors.primaryColorLight};
+    background-color: ${Colors.primaryColor};
     margin-bottom: 64px; 
 `
 

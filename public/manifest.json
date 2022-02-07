@@ -1,16 +1,9 @@
 {
-  "short_name": "GabaritaLab",
-  "name": "Gabarita Lab",
-  "description": "Aplicativo da Gabarita Lab para vestibulares",
+  "short_name": "smartIG",
+  "name": "smartIG",
+  "description": "Aplicativo da SmartIG",
   "start_url": "/",
-  "background_color": "#846CFF",
+  "background_color": "#000000",
   "display": "standalone",
-  "theme_color": "#846CFF",
-  "icons": [
-    {
-      "src": "%PUBLIC_URL%/favicon.ico",
-      "sizes": "72x72",
-      "type": "image/x-icon"
-    }
-  ]
+  "theme_color": "#000000"
 }

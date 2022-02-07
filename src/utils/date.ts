@@ -16,13 +16,10 @@ class DateUtils {
     }
 
     static safariDateToDefaultFormat = (date: string) => {
-
-        console.log('safariDateToDefaultFormat: date=>', date)
         let splittedSafariDate = date.split('-')
 
         let parsedDate = splittedSafariDate[0] + '/' + splittedSafariDate[2] + '/' + splittedSafariDate[1]
 
-        console.log('safariDateToDefaultFormat: parsedDate=>', date)
         return parsedDate
 
     }

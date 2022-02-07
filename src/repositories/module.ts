@@ -1,6 +1,6 @@
 import { ContainerModule } from 'inversify'
-import { StudentRepository } from './StudentRepository'
+import { AppRepository } from './AppRepository'
 
 export const RepositoriesModule = new ContainerModule((bind) => {
-    bind(StudentRepository).toSelf().inSingletonScope()
+    bind(AppRepository).toSelf().inSingletonScope()
 })

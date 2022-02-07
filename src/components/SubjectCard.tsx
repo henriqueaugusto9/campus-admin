@@ -66,7 +66,9 @@ export const SubjectCard: React.FC<SubjectCardPropsType> = ({ key, image, title,
                         {chapter.chapterTitle}
                     </span>)}
                 </TextContainer>
-                
+                <CheckboxContainer>
+                    {checked && <Check style={{ color: '#727073' }} />}
+                </CheckboxContainer>
             </SubjectContainer>
         </Container>
     );

@@ -1,6 +1,6 @@
+import { Card } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { CardComponent } from '../../../components';
 import Colors from '../../../utils/colors';
 
 export const Container = styled.div`
@@ -12,18 +12,6 @@ export const Container = styled.div`
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-`
-
-export const Body = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    margin: 0 16px 56px 16px;
-    padding: 32px 0 32px 0;
-    overflow-y: scroll;
 `
 
 export const ProgressHeader = styled.div`
@@ -55,8 +43,17 @@ export const ScrollableCardBody = styled.div`
     }
 `
 
+export const ValueText = styled.span`
+    font-size: 18px
+`
+
+export const ValueLink = styled.a`
+    font-size: 18px;
+    word-break: break-all;
+`
+
 export const ChartCard: React.FC = (props) => {
-    return <CardComponent
+    return <Card
         style={{
             width: '90%',
             borderRadius: '7px',
@@ -71,5 +68,5 @@ export const ChartCard: React.FC = (props) => {
         }}
     >
         {props.children}
-    </CardComponent>
+    </Card>
 } 

@@ -1,151 +1,126 @@
 
+import { LinearProgress } from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { resolve } from 'inversify-react';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { RouteComponentProps } from 'react-router-dom';
-import { Header } from '../../components';
-import { StudentRepository } from '../../repositories/StudentRepository';
-import Colors from '../../utils/colors';
-import ReactLoading from 'react-loading';
-import { Line, Bar } from 'react-chartjs-2';
-import {
-    CardTitle,
-    ChartCard,
-    Container,
-    ScrollableCardBody
-} from './components/index';
-import { Card } from 'antd';
+import { Body, CardComponent, Header, InputRow, Label, LoadingComponent, SubmitButton } from '../../components';
+import { AppRepository } from '../../repositories/AppRepository';
+import SubscriptionExpired from '../../services/SubscriptionExpired';
 
-type Progress = {
-    title: string,
-    date: string,
-    percentage: string
+
+const EMPTY_PROGRESS_TYPE = {
+    _id: '',
+    title: '',
+    indexes: new Array<any>()
 }
-
-const defaultDataSets = (label: string, color: string, data: Array<any>) => {
-    // return {
-    //     label,
-    //     fill: false,
-    //     lineTension: 0.1,
-    //     backgroundColor: 'rgba(75,192,192,0.4)',
-    //     borderColor: color,
-    //     borderCapStyle: 'butt',
-    //     borderDash: [],
-    //     borderDashOffset: 0.0,
-    //     borderJoinStyle: 'miter',
-    //     pointBorderColor: color,
-    //     pointBackgroundColor: color,
-    //     pointBorderWidth: 1,
-    //     pointHoverRadius: 5,
-    //     pointHoverBackgroundColor: color,
-    //     pointHoverBorderColor: 'rgba(220,220,220,1)',
-    //     pointHoverBorderWidth: 2,
-    //     pointRadius: 1,
-    //     pointHitRadius: 10,
-    //     data
-    // }
-    return {
-        label,
-        backgroundColor: color,
-        borderWidth: 1,
-        maxBarThickness: 28,
-        data
-    }
-}
-
 
 class ProgressScene extends Component<RouteComponentProps>{
 
-    @resolve(StudentRepository) private studentRepo!: StudentRepository
+    @resolve(AppRepository) private appRepo!: AppRepository
 
     state = {
         isLoading: true,
-        progressDataSets: new Array()
+        progress: {
+            progressTypes: new Array<any>()
+        },
+        currentlyOpenProgressType: {
+            isOpen: false,
+            progressType: EMPTY_PROGRESS_TYPE
+        }
     }
 
     async componentDidMount() {
-        const result = await this.studentRepo.getProgress()
-        if (result.progress != null && result.progress.length > 0) {
-            let progressDataSets = result.progress.map((p: any) => {
-                let data = p.classesGrade.map((classGrade: any) => classGrade.averageGrade)
-                let dataSet = defaultDataSets(p.title, Colors.primaryColorLight, data)
-                let suggestedMax = p.type == 'redacao' ? 1000 : 100
-                let chartData = {
-                    labels: p.classesGrade.map((classGrade: any) => {
-                        let title = classGrade.title as string
-                        if (title.length > 10) {
-                            title = title.slice(0, 13) + '...'
-                        }
-                        return title
-                    }),
-                    datasets: [
-                        dataSet
-                    ]
-                };
-                return { title: p.title, data: chartData, suggestedMax: suggestedMax }
-            })
+        const progress = await this.appRepo.getProgress()
 
-            this.setState({ isLoading: false, progressDataSets })
-        } else if (result.progress.length == 0) {
-            this.setState({ isLoading: false, progressDataSets: [] })
-        }
-        else {
-            this.props.history.replace('/login')
-        }
+        this.setState({ isLoading: false, progress })
+
+    }
+
+    openProgressType = (progressTypeId: string) => () => {
+        const progressType = this.state
+            .progress
+            .progressTypes
+            .find((progressType: any) => progressType._id === progressTypeId)
+
+        this.setState({ currentlyOpenProgressType: { isOpen: true, progressType } })
     }
 
 
     render() {
-        const { isLoading, progressDataSets } = this.state
-        const progress = this.studentRepo.progress!
+        let { isLoading, progress, currentlyOpenProgressType } = this.state
         return (
             <>
-                <Header title='Progresso' backgroundColor={Colors.primaryColorLight} />
-                <Container>
-                    {
-                        (!isLoading && progressDataSets != null && progressDataSets.length > 0) && <ScrollableCardBody>
-                            {progressDataSets.map((p: any) => <ChartCard>
-                                <CardTitle>{p.title}:</CardTitle>
-                                <Bar data={p.data} legend={false} options={{
-                                    scales: {
-                                        yAxes: [{
-                                            display: true,
-                                            ticks: {
-                                                suggestedMin: 0,
-                                                suggestedMax: p.suggestedMax,
-                                            }
-                                        }]
-                                    }
-                                }} />
-                                {/* <Line data={p.data} legend={false} options={{
-                                    scales: {
-                                        yAxes: [{
-                                            display: true,
-                                            ticks: {
-                                                suggestedMax: 100,    
-                                                // beginAtZero: true   
-                                            }
-                                        }]
-                                    }
-                                }} /> */}
-                            </ChartCard>)
-                            }
-                        </ScrollableCardBody>
-                    }
-                    {
-                        (!isLoading && progressDataSets != null && progressDataSets.length == 0) &&
-                        <div style={{ height: '100%' }}>
-                            <p>Vazio</p>
-                        </div>
-                    }
-                    {
-                        isLoading && <div
-                            style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Header
+                    canGoBack={currentlyOpenProgressType.isOpen}
+                    goBackTo={'progress'}
+                    onGoBack={() => this.setState({ currentlyOpenProgressType: { isOpen: false, progressType: EMPTY_PROGRESS_TYPE } })}
+                    title={currentlyOpenProgressType.isOpen ? currentlyOpenProgressType.progressType.title : 'Progresso'}
+                />
+                <Body>
+                    <LoadingComponent show={isLoading} />
 
-                            <ReactLoading type='bubbles' color={Colors.primaryColorLight} />
-                        </div>
-                    }
-                </Container>
+                    <SubscriptionExpired.Component />
+                    {(!isLoading && !SubscriptionExpired.isExpired() && !currentlyOpenProgressType.isOpen) && progress?.progressTypes?.length === 0 &&
+                        <div>
+                            <h2>Vazio</h2>
+                        </div>}
+                    {(!isLoading && !currentlyOpenProgressType.isOpen) && progress &&
+                        progress.progressTypes && progress.progressTypes.length > 0 &&
+                        progress.progressTypes.map((progressType: any, index) => (
+                            <CardComponent
+                                key={index}
+                                onClick={this.openProgressType(progressType._id)}
+                            >
+                                <InputRow style={{ justifyContent: 'space-between' }}>
+                                    <span style={{
+                                        fontSize: 22
+                                    }}>{progressType.title}</span>
+                                    <ArrowForwardIcon />
+                                </InputRow>
+                                <div>
+                                    <LinearProgress variant="determinate" value={progressType.totalPercentage} />
+                                    <span>{`${Math.round(
+                                        progressType.totalPercentage,
+                                    )}%`}
+                                    </span>
+                                </div>
+                            </CardComponent>
+                        ))}
+                    {(!isLoading && currentlyOpenProgressType.isOpen) && currentlyOpenProgressType.progressType &&
+                        currentlyOpenProgressType.progressType.indexes.length > 0 &&
+                        currentlyOpenProgressType.progressType.indexes.map((index: any, i) => (
+                            <CardComponent key={i}>
+                                <h2 style={{
+                                    textAlign: 'center'
+                                }}>
+                                    {index.title}
+                                </h2>
+                                <div>
+                                    <LinearProgress variant="determinate" value={index.percentage} />
+                                    <span>{`${Math.round(
+                                        index.percentage,
+                                    )}%`}
+                                    </span>
+                                </div>
+                                <div style={{
+                                    marginTop: '1rem'
+                                }}>
+                                    <Label style={{ fontSize: '1rem' }}>Comentários</Label>
+                                    <p style={{ fontSize: '1rem' }}>{index.description}</p>
+                                </div>
+                                {index.images?.length > 0 && <SubmitButton
+                                    onClick={async () => {
+                                        await this.appRepo.setImages(index.images)
+                                        this.props.history.push('/images')
+                                    }}
+                                >
+                                    Fotos
+                                </SubmitButton>}
+                            </CardComponent>
+                        ))}
+                </Body>
             </>
 
         )

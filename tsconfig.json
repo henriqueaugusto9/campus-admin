@@ -18,10 +18,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-		"experimentalDecorators": true,
-    "jsx": "react"
+    "experimentalDecorators": true,
+    "jsx": "react-jsx"
   },
   "include": [
-    "src", "circular-slider.d.ts", "react-loading.d.ts", "detect-browser.d.ts"
+    "src",
+    "circular-slider.d.ts",
+    "react-loading.d.ts",
+    "detect-browser.d.ts"
   ]
 }

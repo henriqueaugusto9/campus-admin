@@ -41,34 +41,10 @@ class ProfileAPI {
             })
     }
 
-    static putProfile = async (payload: any, { token }: authStudent) => {
-        console.log('body putProfile: ', payload)
+    static putProfile = async (payload: EditProfilePayload, { token }: authStudent) => {
         return await client.put('profile', payload, { headers: { Authorization: `Bearer ${token}` } })
             .then((response) => {
                 return response.data
-            })
-            .catch((err) => {
-                console.log(err)
-                return null
-            })
-
-    }
-
-    static uploadImage = async (file: any, { token }: authStudent) => {
-        console.log('avatar: ', file)
-        const formData = new FormData()
-        formData.append('avatar', file, file.name)
-        const config = {
-            baseURL: 'https://gabarita-back.herokuapp.com/api/',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`
-            }
-        }
-        return await client.post('app/image/upload', formData, config)
-            .then((result: any) => {
-                console.log('imageUploaded: ', result)
-                return result.data
             })
             .catch((err) => {
                 console.log(err)

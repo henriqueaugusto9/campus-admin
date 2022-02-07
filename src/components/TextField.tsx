@@ -30,6 +30,26 @@ const TextFieldContainer = styled.div`
 
 `
 
+export const InputRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 0px;
+`
+
+export const InputColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`
+
+export const Label = styled.span`
+    font-size: 22px;
+    color: ${Colors.secundaryColor};
+    margin-right: 16px;
+    white-space:nowrap;
+`
+
 export const TextField: React.FC<TextFieldProps> = (props) => {
     const inputProps = { placeholder: props.placeholder, type: props.type, onChange: props.onChange }
     return (
