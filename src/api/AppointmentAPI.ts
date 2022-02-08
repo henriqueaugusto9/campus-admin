@@ -5,7 +5,7 @@ class AppointmentAPI {
     static getAllAppointments = async (userId: string, token: string) => {
         return await client({
             url: `appointment/${userId}`,
-            baseURL: 'https://smartig-back.herokuapp.com/api/',
+            baseURL: 'https://campus-back.herokuapp.com/',
             headers: { Authorization: `Bearer ${token}` },
             method: 'GET'
         })

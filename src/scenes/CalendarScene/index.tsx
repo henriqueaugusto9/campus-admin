@@ -39,13 +39,13 @@ class CalendarScene extends Component<RouteComponentProps>{
     }
 
     async componentDidMount() {
-        const appointments = await this.appRepo.getAppointments()
+        // const appointments = await this.appRepo.getAppointments()
 
-        if (appointments !== null) {
-            this.setState({ isLoading: false })
-        } else {
-            this.props.history.replace('/login')
-        }
+        // if (appointments !== null) {
+        //     this.setState({ isLoading: false })
+        // } else {
+        //     this.props.history.replace('/login')
+        // }
     }
 
     componentDidUpdate() {
@@ -65,13 +65,6 @@ class CalendarScene extends Component<RouteComponentProps>{
     getListData = (value: Dayjs, appointments: Array<any>) => {
         let listData: BadgeMessage[] = [];
         appointments.map((ap) => {
-            // console.log('date: ', value.date())
-            // console.log('month: ', value.month())
-            // console.log('year: ', value.year())
-            // console.log('ap.date: ', ap.date.slice(0, 2))
-            // console.log('ap.month: ', ap.date.slice(3, 5))
-            // console.log('ap.year: ', ap.date.slice(6))
-            // console.log('============')
             if (value.date() == parseInt(ap.date.slice(0, 2)) && (value.month() + 1) == parseInt(ap.date.slice(3, 5))
                 && value.year() == parseInt(ap.date.slice(6))) {
                 listData = [

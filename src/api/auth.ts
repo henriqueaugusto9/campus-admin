@@ -8,7 +8,7 @@ interface authStudent {
 class AuthAPI {
 
     static authStudent = async (data: authStudent) => {
-        return await client.post('user/auth', data)
+        return await client.post('auth', data)
             .then((response) => {
                 return response.data
             })

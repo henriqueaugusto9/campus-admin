@@ -91,15 +91,6 @@ export const Header: React.FC<HeaderProps> = (
         <div style={{ width: '100%', display: 'flex', justifyContent: 'left' }}>
             <HeaderTitle style={canGoBack || !suffixComponent ? { marginRight: '40px' } : suffixComponent ? { marginLeft: 0 } : {}}>{title}</HeaderTitle>
         </div>
-        {suffixComponent ?? <div style={{ display: 'flex' }}>
-            {appRepo.cityHall && <AccountBalanceIcon style={{ color: '#fff', fontSize: 32, marginRight: 16 }} onClick={() => {
-                window.open(appRepo.cityHall!);
-            }} />
-            }
-            <a href='whatsapp://send?phone=5516991387091' style={{ width: 32, height: 32 }}>
-                <FaWhatsapp style={{ color: '#fff', fontSize: 32 }} />
-            </a>
-        </div>}
     </Container>
 }
 

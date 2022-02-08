@@ -21,7 +21,7 @@ type AppRepositoryState = {
     progress: any | null,
     reviews: Array<any> | null,
     token: string | null,
-    construction: any,
+    construction: Array<any>,
     isExpired: boolean,
     finance: any,
     tab: Tabs,
@@ -46,7 +46,7 @@ export class AppRepository extends Container<AppRepositoryState> {
         isExpired: false,
         cityHall: null,
         images: new Array(),
-        construction: EMPTY_CONSTRUCTION,
+        construction: new Array(),
         tab: Tabs.CONSTRUCTION,
     }
 
@@ -164,16 +164,15 @@ export class AppRepository extends Container<AppRepositoryState> {
             token: null,
             progress: null,
             reviews: null,
-            construction: EMPTY_CONSTRUCTION,
+            construction: new Array(),
             tab: Tabs.CONSTRUCTION
         })
     }
 
-
     getConstructionData = async () => {
         const token = localStorage.getItem('token');
         let response = await ConstructionAPI.getConstruction(token as string)
-        if (!(response?.construction?.length > 0)) {
+        if (!(response?.length > 0)) {
             return null
         }
         // if (response.isExpired) {
@@ -181,7 +180,20 @@ export class AppRepository extends Container<AppRepositoryState> {
         //     await this.setState({ isExpired: true })
         //     return null
         // }
-        await this.setState({ construction: response.construction[0], cityHall: response.prefeitura })
+        await this.setState({ construction: response, cityHall: response.prefeitura })
+        return this.state.construction!
+    }
+
+    addConstructionData = async (title: string, subtitle: string, description: string) => {
+
+        const token = localStorage.getItem('token');
+        let response = await ConstructionAPI.postConstruction({title: title, subtitle, description}, token as string)
+        // if (response.isExpired) {
+        //     console.log('expired: ', response)
+        //     await this.setState({ isExpired: true })
+        //     return null
+        // }
+        await this.setState({ construction: response, cityHall: response.prefeitura })
         return this.state.construction!
     }
 

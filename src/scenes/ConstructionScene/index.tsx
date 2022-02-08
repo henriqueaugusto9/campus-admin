@@ -7,8 +7,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import {
     Body, CardComponent, Header, InputColumn, InputRow, Label,
     LoadingComponent,
-    SubmitButton
+    SubmitButton,
 } from '../../components';
+import { ScrollableCardBody } from '../ConstructionScene/components/index'
+import { InputContainer } from '../LoginScene/components/index';
+import { TextField } from '../../components/index'
 import { EMPTY_CONSTRUCTION } from '../../model';
 import { AppRepository } from '../../repositories/AppRepository';
 import {
@@ -16,6 +19,7 @@ import {
 } from './components/';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import SubscriptionExpired from '../../services/SubscriptionExpired';
+import { Height } from '@material-ui/icons';
 
 type LocationState = {
     url?: string,
@@ -29,24 +33,46 @@ class ConstructionScene extends Component<RouteComponentProps<{}, StaticContext,
     state = {
         isLoading: true,
         id: '',
-        construction: EMPTY_CONSTRUCTION,
+        construction: new Array(),
+        title: '',
+        subtitle: '',
+        description: '',
     }
 
     async componentDidMount() {
 
 
         const constructions = await this.appRepo.getConstructionData()
+
         if (constructions !== null) {
             this.setState({ isLoading: false, construction: constructions })
-        } else {
-            this.appRepo.logout()
-            this.props.history.replace('/login')
         }
     }
 
-    openPdfLink = (url: string) => {
-        window.open(url);
-        // this.props.history.push({ pathname: `/showPdf/`, state: { url: url } })
+    onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ title: e.target.value })
+    }
+
+    onChangeSubtitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ subtitle: e.target.value })
+    }
+
+    onChangeDescrition = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ description: e.target.value })
+    }
+
+    onSubmitReception = async () => {
+        this.setState({ isLoading: true })
+
+        let result = await this.appRepo.addConstructionData(this.state.title, this.state.subtitle, this.state.description)
+
+        if (result != null) {
+            const constructions = await this.appRepo.getConstructionData()
+            if (constructions !== null) {
+                this.setState({ construction: constructions })
+            }
+            this.setState({ isLoading: false })
+        }
     }
 
     render() {
@@ -54,165 +80,39 @@ class ConstructionScene extends Component<RouteComponentProps<{}, StaticContext,
         return (
             <>
                 <Header
-                    title={'Dados da obra'}
+                    title={'Acolhimento'}
                 />
                 <Body style={{ padding: '16px 16px' }}>
+                    <ScrollableCardBody>
+                    <p>Cadastrar novo card de acolhimento:</p>
+
+                    <InputContainer>
+                        <TextField placeholder='Titulo' onChange={this.onChangeTitle} />
+                        <TextField placeholder='Subtitulo' onChange={this.onChangeSubtitle} />
+                        <TextField placeholder='Descrição' onChange={this.onChangeDescrition} />
+
+                        {/* <div style={{ width: '100%', textAlign: 'center' }}><Link to='/forgot-password'>Esqueci minha senha</Link></div> */}
+                    </InputContainer>
+
+                    <SubmitButton
+                        style={{ marginTop: 24 }}
+                        onClick={() => { this.onSubmitReception() }}
+                    >
+                        Cadastrar
+                    </SubmitButton>
 
                     <LoadingComponent show={isLoading} />
 
-                    <SubscriptionExpired.Component />
-                    {(!isLoading && !SubscriptionExpired.isExpired()) && <><CardComponent>
-                        <InputColumn>
-                            <Label>
-                                Endereço:
-                            </Label>
-                            <ValueText>{_.get(construction, 'endereco')}</ValueText>
-                        </InputColumn>
-                    </CardComponent>
-                        <CardComponent>
-                            <InputColumn>
-                                <Label>
-                                    Lote:
-                                </Label>
-                                <ValueText>{_.get(construction, 'lote')}</ValueText>
-                            </InputColumn>
-
+                    {(!isLoading) && construction.map(c =>
+                        <> <CardComponent>
+                            <p>{c.title}</p>
+                            <p>{c.subtitle}</p>
+                            <p>{c.description.substring(0,150)}...</p>
                         </CardComponent>
-                        <CardComponent>
-                            <InputColumn>
-                                <Label>
-                                    Quadra:
-                                </Label>
-                                <ValueText>{_.get(construction, 'quadra')}</ValueText>
-                            </InputColumn>
-
-                        </CardComponent>
-                        <CardComponent>
-                            <InputColumn>
-                                <Label>
-                                    Proprietário:
-                                </Label>
-                                <ValueText>{_.get(construction, 'proprietario')}</ValueText>
-                            </InputColumn>
-
-                        </CardComponent>
-                        <CardComponent>
-                            <InputColumn>
-                                <Label>
-                                    Início Contrato:
-                                </Label>
-                                <ValueText>{_.get(construction, 'inicioContrato')}</ValueText>
-                            </InputColumn>
-
-                        </CardComponent>
-
-                        {_.get(construction, 'docs.ART') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.ART'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Art: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-
-                            </CardComponent>
-                        }{_.get(construction, 'docs.matricula') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.matricula'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Matrícula: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-
-                            </CardComponent>
-                        }{_.get(construction, 'docs.relContribuinte') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.relContribuinte'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Rel Contribuinte: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-
-                            </CardComponent>
-                        }
-                        {_.get(construction, 'docs.alana') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.alana'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Alvara: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-
-                            </CardComponent>
-                        }
-                        {_.get(construction, 'docs.habiteSe') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.habiteSe'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Habite-se: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                        {_.get(construction, 'docs.projetos') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.projetos'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Projetos: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                         {_.get(construction, 'docs.proposta') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.proposta'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Proposta: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                        {_.get(construction, 'docs.contrato') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.contrato'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Contrato: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                        {_.get(construction, 'docs.bombeiros') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.bombeiros'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Bombeiros: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                          {_.get(construction, 'docs.protocolos') !== '' &&
-                            <CardComponent onClick={() => this.openPdfLink(_.get(construction, 'docs.protocolos'))}>
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Protocolos: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                        {
-                            construction.images?.length > 0 &&
-                            <CardComponent onClick={async () => {
-                                await this.appRepo.setImages(construction.images)
-                                this.props.history.push('/images')
-                            }}
-                            >
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <Label>Imagens: </Label>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                            </CardComponent>
-                        }
-                    </>}
-
-                    <SubmitButton
-                        style={{ marginTop: 64 }}
-                        onClick={() => {
-                            this.appRepo.logout()
-                            this.props.history.replace('/login')
-                        }}
-                    >
-                        Logout
-                    </SubmitButton>
-
+                        </>
+                    )
+                    }
+                    </ScrollableCardBody>
                 </Body>
             </>
         )

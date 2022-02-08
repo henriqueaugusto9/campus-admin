@@ -54,12 +54,12 @@ class FinancialScene extends Component<RouteComponentProps>{
 
 
     async componentDidMount() {
-        const finance = await this.appRepo.getFinance()
-        if (finance != null) {
-            this.setState({ isLoading: false, url: finance.link })
-        } else {
-            this.props.history.replace('/login')
-        }
+        // const finance = await this.appRepo.getFinance()
+        // if (finance != null) {
+        //     this.setState({ isLoading: false, url: finance.link })
+        // } else {
+        //     this.props.history.replace('/login')
+        // }
     }
 
 

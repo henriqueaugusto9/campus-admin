@@ -73,7 +73,7 @@ class LoginScene extends Component<RouteComponentProps> {
                     backgroundColor: '#f3f9fe',
                     borderRadius: '7px'
                 }}>
-                    <LogoContainer><Image width={112} src={process.env.PUBLIC_URL + '/images/smartig.webp'} /></LogoContainer>
+                    <LogoContainer><Image width={112} src={'https://campusgabarita.com/images/logo-form.png'} /></LogoContainer>
                     {showError && <ErrorMessage>E-mail ou senha incorretos</ErrorMessage>}
                     <InputContainer>
                         <TextField placeholder='Seu e-mail' type='email' onChange={this.onChangeEmail} />
@@ -83,7 +83,7 @@ class LoginScene extends Component<RouteComponentProps> {
                     </InputContainer>
                     <ButtonContainer>
                         <Button onClick={isLoading ? () => { } : this.onSubmitLogin} style={{ borderRadius: '8px', backgroundColor: Colors.primaryColor, borderColor: 'transparent', fontWeight: 'bold' }} size='large' type='primary'>{
-                            isLoading ? <ReactLoading type='spin' color='#fff' height={24} width={24} /> :
+                            isLoading ? <ReactLoading type='spin' color='#bb86fc' height={24} width={24} /> :
                                 'Entrar'
                         }</Button>
                     </ButtonContainer>

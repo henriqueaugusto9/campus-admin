@@ -1,7 +1,7 @@
 {
-  "short_name": "smartIG",
-  "name": "smartIG",
-  "description": "Aplicativo da SmartIG",
+  "short_name": "AdminCampus",
+  "name": "AdminCampus",
+  "description": "Aplicativo AdminCampus",
   "start_url": "/",
   "background_color": "#000000",
   "display": "standalone",

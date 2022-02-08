@@ -32,9 +32,9 @@ class ProgressScene extends Component<RouteComponentProps>{
     }
 
     async componentDidMount() {
-        const progress = await this.appRepo.getProgress()
+        // const progress = await this.appRepo.getProgress()
 
-        this.setState({ isLoading: false, progress })
+        // this.setState({ isLoading: false, progress })
 
     }
 
@@ -53,73 +53,13 @@ class ProgressScene extends Component<RouteComponentProps>{
         return (
             <>
                 <Header
-                    canGoBack={currentlyOpenProgressType.isOpen}
-                    goBackTo={'progress'}
-                    onGoBack={() => this.setState({ currentlyOpenProgressType: { isOpen: false, progressType: EMPTY_PROGRESS_TYPE } })}
-                    title={currentlyOpenProgressType.isOpen ? currentlyOpenProgressType.progressType.title : 'Progresso'}
+                    title={'Recadinho'}
                 />
                 <Body>
+
                     <LoadingComponent show={isLoading} />
 
-                    <SubscriptionExpired.Component />
-                    {(!isLoading && !SubscriptionExpired.isExpired() && !currentlyOpenProgressType.isOpen) && progress?.progressTypes?.length === 0 &&
-                        <div>
-                            <h2>Vazio</h2>
-                        </div>}
-                    {(!isLoading && !currentlyOpenProgressType.isOpen) && progress &&
-                        progress.progressTypes && progress.progressTypes.length > 0 &&
-                        progress.progressTypes.map((progressType: any, index) => (
-                            <CardComponent
-                                key={index}
-                                onClick={this.openProgressType(progressType._id)}
-                            >
-                                <InputRow style={{ justifyContent: 'space-between' }}>
-                                    <span style={{
-                                        fontSize: 22
-                                    }}>{progressType.title}</span>
-                                    <ArrowForwardIcon />
-                                </InputRow>
-                                <div>
-                                    <LinearProgress variant="determinate" value={progressType.totalPercentage} />
-                                    <span>{`${Math.round(
-                                        progressType.totalPercentage,
-                                    )}%`}
-                                    </span>
-                                </div>
-                            </CardComponent>
-                        ))}
-                    {(!isLoading && currentlyOpenProgressType.isOpen) && currentlyOpenProgressType.progressType &&
-                        currentlyOpenProgressType.progressType.indexes.length > 0 &&
-                        currentlyOpenProgressType.progressType.indexes.map((index: any, i) => (
-                            <CardComponent key={i}>
-                                <h2 style={{
-                                    textAlign: 'center'
-                                }}>
-                                    {index.title}
-                                </h2>
-                                <div>
-                                    <LinearProgress variant="determinate" value={index.percentage} />
-                                    <span>{`${Math.round(
-                                        index.percentage,
-                                    )}%`}
-                                    </span>
-                                </div>
-                                <div style={{
-                                    marginTop: '1rem'
-                                }}>
-                                    <Label style={{ fontSize: '1rem' }}>Comentários</Label>
-                                    <p style={{ fontSize: '1rem' }}>{index.description}</p>
-                                </div>
-                                {index.images?.length > 0 && <SubmitButton
-                                    onClick={async () => {
-                                        await this.appRepo.setImages(index.images)
-                                        this.props.history.push('/images')
-                                    }}
-                                >
-                                    Fotos
-                                </SubmitButton>}
-                            </CardComponent>
-                        ))}
+                    <p>Em breve</p>
                 </Body>
             </>
 

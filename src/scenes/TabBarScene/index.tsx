@@ -1,7 +1,7 @@
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import { Business, CalendarToday, MonetizationOn, TrendingUp, MoreVert, ExitToApp } from '@material-ui/icons';
+import { Business, CalendarToday, MonetizationOn, TrendingUp, MoreVert, ExitToApp, EmojiPeople, SpeakerNotes } from '@material-ui/icons';
 import { resolve } from 'inversify-react';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
@@ -82,10 +82,10 @@ class TabBarScene extends Component<RouteComponentProps> {
                     backgroundColor: '#fff',
                 }}
             >
-                <BottomNavigationAction label="Obra" value={Tabs.CONSTRUCTION} icon={<Business />} />
-                <BottomNavigationAction label="Progresso" value={Tabs.PROGRESS} icon={<TrendingUp />} />
-                <BottomNavigationAction label="Financeiro" value={Tabs.FINANCIAL} icon={<MonetizationOn />} />
-                <BottomNavigationAction label="Calendario" value={Tabs.CALENDAR} icon={<CalendarToday />} />
+                <BottomNavigationAction label="Acolhimento" value={Tabs.CONSTRUCTION} icon={<EmojiPeople />} />
+                <BottomNavigationAction label="Recadinho" value={Tabs.PROGRESS} icon={<SpeakerNotes />} />
+                {/* <BottomNavigationAction label="Financeiro" value={Tabs.FINANCIAL} icon={<MonetizationOn />} />
+                <BottomNavigationAction label="Calendario" value={Tabs.CALENDAR} icon={<CalendarToday />} /> */}
             </BottomNavigation>
         </>
     }
