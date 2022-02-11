@@ -26,7 +26,8 @@ type AppRepositoryState = {
     finance: any,
     tab: Tabs,
     cityHall: string | null,
-    images: Array<any>
+    images: Array<any>,
+    notes: Array<any>,
 }
 
 type GetReviewsParams = {
@@ -48,6 +49,7 @@ export class AppRepository extends Container<AppRepositoryState> {
         images: new Array(),
         construction: new Array(),
         tab: Tabs.CONSTRUCTION,
+        notes: new Array()
     }
 
     get appointments() {
@@ -175,11 +177,7 @@ export class AppRepository extends Container<AppRepositoryState> {
         if (!(response?.length > 0)) {
             return null
         }
-        // if (response.isExpired) {
-        //     console.log('expired: ', response)
-        //     await this.setState({ isExpired: true })
-        //     return null
-        // }
+
         await this.setState({ construction: response, cityHall: response.prefeitura })
         return this.state.construction!
     }
@@ -188,13 +186,29 @@ export class AppRepository extends Container<AppRepositoryState> {
 
         const token = localStorage.getItem('token');
         let response = await ConstructionAPI.postConstruction({title: title, subtitle, description}, token as string)
-        // if (response.isExpired) {
-        //     console.log('expired: ', response)
-        //     await this.setState({ isExpired: true })
-        //     return null
-        // }
+
         await this.setState({ construction: response, cityHall: response.prefeitura })
         return this.state.construction!
+    }
+
+    getNoteData = async () => {
+        const token = localStorage.getItem('token');
+        let response = await ConstructionAPI.getNote(token as string)
+        if (!(response?.length > 0)) {
+            return null
+        }
+
+        await this.setState({ notes: response, cityHall: response.prefeitura })
+        return this.state.notes!
+    }
+
+    addNoteData = async (description: string) => {
+
+        const token = localStorage.getItem('token');
+        let response = await ConstructionAPI.postNote({ description }, token as string)
+
+        await this.setState({ notes: response, cityHall: response.prefeitura })
+        return this.state.notes!
     }
 
     getFinance = async () => {
